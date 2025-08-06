@@ -11,7 +11,7 @@ const contactSchema = new Schema({
     type: String,
     required: true,
   },
-  phone: {
+  phoneNumber: {
     type: String,
     required: true,
     minlength: 3,
@@ -25,11 +25,6 @@ const contactSchema = new Schema({
   isFavourite: {
     type: Boolean,
     default: false,
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required: true,
   },
 });
 
