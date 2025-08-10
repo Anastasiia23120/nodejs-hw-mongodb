@@ -13,8 +13,11 @@ import {
   addContactSchema,
   updateContactSchema,
 } from '../schemas/contactsSchemas.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', ctrlWrapper(getAllContacts));
 
