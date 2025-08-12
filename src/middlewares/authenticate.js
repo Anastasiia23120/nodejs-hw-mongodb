@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import User from '../models/User.js';
+import Session from '../models/Session.js';
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_SECRET_ACCESS;
 
@@ -14,6 +15,11 @@ export const authenticate = async (req, res, next) => {
     if (!token) throw createError(401, 'No token provided');
 
     const payload = jwt.verify(token, ACCESS_TOKEN_SECRET);
+
+    const session = await Session.findOne({ accessToken: token });
+    if (!session) {
+      throw createError(401, 'Session not found or logged out');
+    }
 
     const user = await User.findById(payload.userId);
     if (!user) throw createError(401, 'User not found');
