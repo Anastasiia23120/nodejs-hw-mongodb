@@ -86,13 +86,22 @@ export const refresh = async (token) => {
     await session.save();
 
     return { accessToken, refreshToken };
-  } catch {
+  } catch (err) {
+    console.error(err);
     throw createError(401, 'Invalid refresh token');
   }
 };
 
-export const logout = async (refreshToken) => {
-  await Session.findOneAndDelete({ refreshToken });
+export const logout = async (
+  refreshToken,
+  allDevices = false,
+  userId = null,
+) => {
+  if (allDevices && userId) {
+    await Session.deleteMany({ userId });
+  } else if (refreshToken) {
+    await Session.findOneAndDelete({ refreshToken });
+  }
 };
 
 export const sendResetEmail = async (email) => {
@@ -100,9 +109,9 @@ export const sendResetEmail = async (email) => {
   if (!user) throw createError(404, 'User not found');
 
   const resetToken = jwt.sign({ userId: user._id }, RESET_TOKEN_SECRET, {
-    expiresIn: '1h',
+    expiresIn: '5m',
   });
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+  const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${resetToken}`;
 
   await sendEmail({
     to: email,
@@ -115,11 +124,16 @@ export const resetPassword = async (token, password) => {
   try {
     const payload = jwt.verify(token, RESET_TOKEN_SECRET);
     const user = await User.findById(payload.userId);
+
     if (!user) throw createError(404, 'User not found!');
+
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
     await user.save();
-  } catch {
+
+    await Session.deleteMany({ userId: user._id });
+  } catch (err) {
+    console.error(err);
     throw createError(401, 'Token is expired or invalid.');
   }
 };

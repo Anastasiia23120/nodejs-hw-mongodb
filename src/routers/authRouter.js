@@ -14,14 +14,16 @@ const router = Router();
 router.post('/register', validateBody(registerSchema), authController.register);
 router.post('/login', validateBody(loginSchema), authController.login);
 router.post('/refresh', authController.refresh);
+
 router.post('/logout', authenticate, authController.logout);
+
 router.post(
   '/send-reset-email',
   validateBody(resetEmailSchema),
   authController.sendResetEmail,
 );
 router.post(
-  '/reset-password',
+  '/reset-pwd',
   validateBody(resetPasswordSchema),
   authController.resetPassword,
 );

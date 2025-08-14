@@ -46,8 +46,11 @@ export const refresh = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body;
-    await authService.logout(refreshToken);
+    const { refreshToken, allDevices } = req.body;
+    const userId = req.user?._id;
+
+    await authService.logout(refreshToken, allDevices, userId);
+
     res.status(204).end();
   } catch (err) {
     next(err);
@@ -61,6 +64,7 @@ export const sendResetEmail = async (req, res, next) => {
     res.json({
       status: 200,
       message: 'Reset password email sent successfully!',
+      data: {},
     });
   } catch (err) {
     next(err);
@@ -74,6 +78,7 @@ export const resetPassword = async (req, res, next) => {
     res.json({
       status: 200,
       message: 'Password has been reset successfully!',
+      data: {},
     });
   } catch (err) {
     next(err);
