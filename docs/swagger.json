@@ -3,11 +3,11 @@
   "info": {
     "version": "1.0.0",
     "title": "Contact Manager API",
+    "description": "A RESTful API for managing user contacts with authentication, password reset functionality, and photo upload capabilities. Users can register, login, manage their contacts with CRUD operations, and upload contact photos to Cloudinary.",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
-    "description": "A RESTful API for managing user contacts with authentication, password reset functionality, and photo upload capabilities. Users can register, login, manage their contacts with CRUD operations, and upload contact photos to Cloudinary."
+    }
   },
   "servers": [
     {
@@ -18,12 +18,18 @@
     {
       "name": "Contacts",
       "description": "Contact management endpoints for CRUD operations"
+    },
+    {
+      "name": "Auth",
+      "description": "User authorization and registration"
     }
   ],
   "paths": {
     "/contacts": {
       "get": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Get all contacts",
         "operationId": "getAllContacts",
         "description": "Retrieve all contacts for the authenticated user with pagination, sorting, and filtering options.",
@@ -80,7 +86,10 @@
             "name": "sortOrder",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"],
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "default": "asc",
               "example": "asc"
             },
@@ -91,7 +100,11 @@
             "name": "type",
             "schema": {
               "type": "string",
-              "enum": ["work", "home", "personal"],
+              "enum": [
+                "work",
+                "home",
+                "personal"
+              ],
               "example": "personal"
             },
             "description": "Filter contacts by type"
@@ -101,7 +114,10 @@
             "name": "isFavourite",
             "schema": {
               "type": "string",
-              "enum": ["true", "false"],
+              "enum": [
+                "true",
+                "false"
+              ],
               "example": true
             },
             "description": "Filter contacts by favourite status"
@@ -114,7 +130,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -170,7 +190,9 @@
         }
       },
       "post": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Create new contact",
         "operationId": "createContact",
         "description": "Create a new contact for the authenticated user. Supports photo upload to Cloudinary.",
@@ -186,7 +208,11 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "phoneNumber", "contactType"],
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "contactType"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -218,7 +244,11 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": ["work", "home", "personal"],
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ],
                     "default": "personal",
                     "example": "personal",
                     "description": "Type of contact"
@@ -240,7 +270,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -293,7 +327,9 @@
     },
     "/contacts/{contactId}": {
       "get": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Get contact by ID",
         "operationId": "getContactById",
         "description": "Retrieve a specific contact by its unique identifier. The contact must belong to the authenticated user.",
@@ -322,7 +358,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -349,7 +389,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -371,7 +415,9 @@
         }
       },
       "patch": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Update contact",
         "operationId": "patchContactById",
         "description": "Update an existing contact by its ID. At least one field must be provided. Supports photo upload to replace existing photo.",
@@ -431,7 +477,11 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": ["work", "home", "personal"],
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ],
                     "example": "work",
                     "description": "Type of contact"
                   },
@@ -452,7 +502,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -527,10 +581,12 @@
         }
       },
       "delete": {
-        "tags": ["Contacts"],
-        "summary": "Update contact",
-        "operationId": "updateContact",
-        "description": "Update an existing contact by its ID. At least one field must be provided. Supports photo upload to replace existing photo.",
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Delete contact",
+        "operationId": "deleteContact",
+        "description": "Delete an existing contact by its ID.",
         "security": [
           {
             "bearerAuth": []
@@ -546,88 +602,12 @@
               "format": "ObjectId",
               "example": "507f1f77bcf86cd799439011"
             },
-            "description": "The unique identifier of the contact to update"
+            "description": "The unique identifier of the contact to delete"
           }
         ],
-        "requestBody": {
-          "description": "Contact data to update (at least one field required)",
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "minProperties": 1,
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 20,
-                    "example": "Jane Doe",
-                    "description": "Contact's full name"
-                  },
-                  "phoneNumber": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 20,
-                    "example": "+1987654321",
-                    "description": "Contact's phone number"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "minLength": 3,
-                    "maxLength": 254,
-                    "example": "jane.doe@example.com",
-                    "description": "Contact's email address"
-                  },
-                  "isFavourite": {
-                    "type": "boolean",
-                    "example": true,
-                    "description": "Whether the contact is marked as favourite"
-                  },
-                  "contactType": {
-                    "type": "string",
-                    "enum": ["work", "home", "personal"],
-                    "example": "work",
-                    "description": "Type of contact"
-                  },
-                  "photo": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "New contact's photo (image file, max 5MB)"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
-          "200": {
-            "description": "Contact successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": ["status", "message", "data"],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully patched a contact!"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/contact"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/400"
+          "204": {
+            "description": "Contact successfully deleted (No Content)"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -657,7 +637,7 @@
             }
           },
           "500": {
-            "description": "Internal server error (e.g., photo upload failure)",
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -669,11 +649,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Failed to upload photo"
+                      "example": "Internal server error"
                     },
                     "data": {
                       "type": "string",
-                      "example": "Failed to upload photo"
+                      "example": "Internal server error"
                     }
                   }
                 }
@@ -739,7 +719,11 @@
           },
           "contactType": {
             "type": "string",
-            "enum": ["work", "home", "personal"],
+            "enum": [
+              "work",
+              "home",
+              "personal"
+            ],
             "default": "personal",
             "example": "personal",
             "description": "Type of contact"
@@ -778,7 +762,11 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": ["status", "message", "data"],
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -803,7 +791,11 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": ["status", "message", "data"],
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
               "properties": {
                 "status": {
                   "type": "integer",
